@@ -1,0 +1,7 @@
+iframe_cookie_consent.form:
+  path: '/admin/config/content/iframe_cookie_consent'
+  defaults:
+    _form: '\Drupal\iframe_cookie_consent\Form\CookieconsentSettingsForm'
+    _title: 'Hide and show content based on the visitors consent'
+  requirements:
+    _permission: 'administer site configuration'

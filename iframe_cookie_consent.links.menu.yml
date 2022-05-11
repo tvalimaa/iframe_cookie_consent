@@ -1,0 +1,5 @@
+iframe_cookie_consent.form:
+  title: 'Iframe cookie consent settings'
+  description: 'Configure settings for the custom module.'
+  route_name: iframe_cookie_consent.form
+  parent: system.admin_config_content
