@@ -28,7 +28,7 @@ class IframeCookieConsent extends FilterBase {
     // Load Ckeditor content to DOMDocument.
     $dom = new \DOMDocument;
     $dom->encoding = 'utf-8';
-    $dom->loadHTML(utf8_decode($text));
+    @$dom->loadHTML(utf8_decode($text));
     // Youtube regex pattern.
     $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
     $match = NULL;
