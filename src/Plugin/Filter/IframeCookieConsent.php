@@ -55,7 +55,7 @@ class IframeCookieConsent extends FilterBase {
         $optout->setAttribute('class','cookieconsent-optout-' . $consent_cat);
         // Use a helper to create string including html.
         $helper = new \DOMDocument;
-        $helper->loadHTML('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.');
+        $helper->loadHTML(t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.'));
         // Put optout html string inside optout div.
         $optout->appendChild($dom->importNode($helper->documentElement, true));
         // Insert optin element before iframe.
