@@ -26,14 +26,14 @@ class IframeCookieConsent extends FilterBase {
     // Get cookie consent category.
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
     // Load Ckeditor content to DOMDocument.
-    $dom = new \DOMDocument;
+    $dom = new \DOMDocument();
     $dom->encoding = 'utf-8';
     @$dom->loadHTML(utf8_decode($text));
     // Youtube regex pattern.
     $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
     $match = NULL;
 
-    // Loop all content iframes
+    // Loop all content iframes.
     foreach ($dom->getElementsByTagName('iframe') as $iframe) {
       // Get iframe url.
       $url = $iframe->getAttribute('src');
@@ -45,19 +45,21 @@ class IframeCookieConsent extends FilterBase {
         $iframe->removeAttribute('src');
         // Set cookieconsent category value.
         $iframe->setAttribute('data-cookieconsent', $consent_cat);
-        // Visible when user has opted in for one or more types of cookies, otherwise hidden.
+        // Visible when user has opted in, otherwise hidden.
         // Create div element with right class and value.
-        $optin = $dom->createElement('div', t('This content is only visible when the visitor has consented to marketing cookies.'));
-        $optin->setAttribute('class','cookieconsent-optin-' . $consent_cat);
-        // Visible when user has not yet submitted a consent or has opted out of all but strictly necessary cookies, otherwise hidden.
+        $optin = $dom->createElement('div', $this->t('This content is only visible when the visitor has consented to marketing cookies.'));
+        $optin->setAttribute('class', 'cookieconsent-optin-' . $consent_cat);
+        // Visible when user has not yet submitted a consent or
+        // has opted out of all but strictly necessary cookies,
+        // otherwise hidden.
         // First create div with right class.
         $optout = $dom->createElement('div');
-        $optout->setAttribute('class','cookieconsent-optout-' . $consent_cat);
+        $optout->setAttribute('class', 'cookieconsent-optout-' . $consent_cat);
         // Use a helper to create string including html.
-        $helper = new \DOMDocument;
-        $helper->loadHTML(t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.'));
+        $helper = new \DOMDocument();
+        $helper->loadHTML($this->t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.'));
         // Put optout html string inside optout div.
-        $optout->appendChild($dom->importNode($helper->documentElement, true));
+        $optout->appendChild($dom->importNode($helper->documentElement, TRUE));
         // Insert optin element before iframe.
         $iframe->parentNode->insertBefore($optin, $iframe);
         // Insert optout element before iframe.
@@ -66,6 +68,7 @@ class IframeCookieConsent extends FilterBase {
     }
 
     $text = $dom->saveHTML();
+
     return new FilterProcessResult($text);
   }
 }
