@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Iframe cookie consent module which handles video field.
+ */
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function iframe_cookie_consent_preprocess_field(&$variables, $hook) {
+  // Whitelist bundles.
+  $whitelist = ['video', 'remote_video'];
+
+  if (in_array($variables['element']['#bundle'], $whitelist)) {
+    // Get cookie consent settings.
+    $config = \Drupal::config('iframe_cookie_consent.settings');
+    // Get cookie consent category.
+    $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
+    // Youtube regex pattern.
+    $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
+
+    foreach ($variables['items'] as $key => $item) {
+      // Check that content type is html_tag.
+      if (isset($item['content']['#type']) && $item['content']['#type'] == 'html_tag') {
+        $src = $item['content']['#attributes']['src'] ?? NULL;
+        // Check if iframe has Youtube url.
+        if (preg_match($regex_pattern, $src, $match)) {
+          // Change src attribute to data-cookieblock-src.
+          $variables['items'][$key]['content']['#attributes']['data-cookieblock-src'] = $src;
+          unset($variables['items'][$key]['content']['#attributes']['src']);
+          // Set cookieconsent category value.
+          $variables['items'][$key]['content']['#attributes']['data-cookieconsent'] = $consent_cat;
+          // Put optout & optin html string.
+          $variables['items'][$key]['content']['#prefix'] = '<div class="cookieconsent-optin-' . $consent_cat . '">'
+            . t('This content is only visible when the visitor has consented to marketing cookies.')
+            . '</div>';
+          $variables['items'][$key]['content']['#prefix'] .= '<div class="cookieconsent-optout-' . $consent_cat . '">'
+            . t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.')
+            . '</div>';
+        }
+      }
+    }
+  }
+}
