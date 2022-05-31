@@ -9,7 +9,10 @@
  * Implements hook_preprocess_field().
  */
 function iframe_cookie_consent_preprocess_field(&$variables, $hook) {
-  if ($variables['element']['#bundle'] == 'video') {
+  // Whitelist bundles.
+  $whitelist = ['video', 'remote_video'];
+
+  if (in_array($variables['element']['#bundle'], $whitelist)) {
     // Get cookie consent settings.
     $config = \Drupal::config('iframe_cookie_consent.settings');
     // Get cookie consent category.
