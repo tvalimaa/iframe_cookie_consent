@@ -27,8 +27,7 @@ class IframeCookieConsent extends FilterBase {
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
     // Load Ckeditor content to DOMDocument.
     $dom = new \DOMDocument();
-    $dom->encoding = 'utf-8';
-    @$dom->loadHTML(utf8_decode($text));
+    @$dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
     // Youtube regex pattern.
     $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
     $match = NULL;
@@ -67,7 +66,7 @@ class IframeCookieConsent extends FilterBase {
       }
     }
 
-    $text = $dom->saveHTML();
+    $text = $dom->saveHTML($dom->documentElement);
 
     return new FilterProcessResult($text);
   }
