@@ -27,6 +27,7 @@ class IframeCookieConsent extends FilterBase {
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
     // Load Ckeditor content to DOMDocument.
     $dom = new \DOMDocument();
+    libxml_use_internal_errors(true);
     @$dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
     // Youtube regex pattern.
     $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
@@ -39,6 +40,7 @@ class IframeCookieConsent extends FilterBase {
 
       // Check if iframe has Youtube url.
       if (preg_match($regex_pattern, $url, $match)) {
+        $match = TRUE;
         // Change src attribute to data-cookieblock-src.
         $iframe->setAttribute('data-cookieblock-src', $iframe->getAttribute('src'));
         $iframe->removeAttribute('src');
@@ -66,7 +68,9 @@ class IframeCookieConsent extends FilterBase {
       }
     }
 
-    $text = $dom->saveHTML($dom->documentElement);
+    if ($match) {
+      $text = $dom->saveHTML($dom->documentElement);
+    }
 
     return new FilterProcessResult($text);
   }
