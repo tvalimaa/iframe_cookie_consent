@@ -4,6 +4,7 @@ namespace Drupal\iframe_cookie_consent\Plugin\Filter;
 
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Masterminds\HTML5;
 
 /**
  * Provides a filter to help celebrate good times!
@@ -26,9 +27,9 @@ class IframeCookieConsent extends FilterBase {
     // Get cookie consent category.
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
     // Load Ckeditor content to DOMDocument.
-    $dom = new \DOMDocument();
+    $html5 = new HTML5();
     libxml_use_internal_errors(true);
-    @$dom->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
+    $dom = $html5->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
     // Youtube regex pattern.
     $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
     $match = NULL;
