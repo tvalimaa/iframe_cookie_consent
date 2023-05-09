@@ -30,8 +30,8 @@ class IframeCookieConsent extends FilterBase {
     $html5 = new HTML5();
     libxml_use_internal_errors(true);
     $dom = $html5->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
-    // Youtube regex pattern.
-    $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
+    // Spotify & Youtube regex pattern.
+    $regex_pattern = "/(open.spotify.com|youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
     $match = NULL;
 
     // Loop all content iframes.
@@ -59,7 +59,7 @@ class IframeCookieConsent extends FilterBase {
         $optout->setAttribute('class', 'cookieconsent-optout-' . $consent_cat);
         // Use a helper to create string including html.
         $helper = new \DOMDocument();
-        $helper->loadHTML($this->t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this video.'));
+        $helper->loadHTML($this->t('Please <a href="javascript:Cookiebot.renew()">accept marketing-cookies</a> to watch this content.'));
         // Put optout html string inside optout div.
         $optout->appendChild($dom->importNode($helper->documentElement, TRUE));
         // Insert optin element before iframe.
