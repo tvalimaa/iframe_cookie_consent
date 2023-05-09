@@ -13,7 +13,7 @@ use Masterminds\HTML5;
  *   id = "iframecookieconsent",
  *   title = @Translation("Iframe cookie consent"),
  *   description = @Translation("Hide and show content based on the visitor's consent"),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_IRREVERSIBLE,
  * )
  */
 class IframeCookieConsent extends FilterBase {
