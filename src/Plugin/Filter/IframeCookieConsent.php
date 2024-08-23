@@ -28,10 +28,10 @@ class IframeCookieConsent extends FilterBase {
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
     // Load Ckeditor content to DOMDocument.
     $html5 = new HTML5();
-    libxml_use_internal_errors(true);
+    libxml_use_internal_errors(TRUE);
     $dom = $html5->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
-    // Spotify & Youtube regex pattern.
-    $regex_pattern = "/(open.spotify.com|youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
+    // Spotify, Youtube & Vimeo regex pattern.
+    $regex_pattern = "/(open.spotify.com|youtube.com|youtu.be|player.vimeo.com)\/(embed)?(video)?(\?v=)?(\S+)?/";
     $match = NULL;
 
     // Loop all content iframes.
