@@ -17,8 +17,8 @@ function iframe_cookie_consent_preprocess_field(&$variables, $hook) {
     $config = \Drupal::config('iframe_cookie_consent.settings');
     // Get cookie consent category.
     $consent_cat = $config->get('cookieconsent_category') ?? 'marketing';
-    // Youtube regex pattern.
-    $regex_pattern = "/(youtube.com|youtu.be)\/(embed)?(\?v=)?(\S+)?/";
+    // Youtube and Vimeo regex pattern.
+    $regex_pattern = "/(youtube.com|youtu.be|player.vimeo.com)\/(embed)?(video)?(\?v=)?(\S+)?/";
 
     foreach ($variables['items'] as $key => $item) {
       // Check that content type is html_tag.
