@@ -29,7 +29,7 @@ class IframeCookieConsent extends FilterBase {
     // Load Ckeditor content to DOMDocument.
     $html5 = new HTML5();
     libxml_use_internal_errors(TRUE);
-    $dom = $html5->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
+    $dom = $html5->loadHTML($text);
     // Spotify, Youtube & Vimeo regex pattern.
     $regex_pattern = "/(open.spotify.com|youtube.com|youtu.be|player.vimeo.com)\/(embed)?(video)?(\?v=)?(\S+)?/";
     $match = NULL;
